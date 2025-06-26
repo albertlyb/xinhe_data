@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025赛事资源包</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .file-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .file-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .pdf-icon {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .excel-icon {
+            background: linear-gradient(135deg, #2ed573, #1e90ff);
+        }
+
+        .image-icon {
+            background: linear-gradient(135deg, #ffa726, #ff7043);
+        }
+
+        .file-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .file-type {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2025赛事资源包</h1>
+            <p>竞赛资料一站式下载平台</p>
+        </div>
+        
+        <div class="content">
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalFiles">7</span>
+                    <div class="stat-label">总文件数</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="pdfCount">3</span>
+                    <div class="stat-label">PDF文档</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="imageCount">3</span>
+                    <div class="stat-label">图片文件</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="excelCount">1</span>
+                    <div class="stat-label">Excel表格</div>
+                </div>
+            </div>
+            
+            <div class="file-grid" id="fileGrid">
+                <!-- 文件卡片将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const files = [
+            {
+                name: "初阶无人机.jpg",
+                type: "图片文件",
+                category: "image",
+                icon: "🖼️"
+            },
+            {
+                name: "中阶无人机.jpg",
+                type: "图片文件",
+                category: "image",
+                icon: "🖼️"
+            },
+            {
+                name: "高阶无人机.jpg",
+                type: "图片文件",
+                category: "image",
+                icon: "🖼️"
+            },
+            {
+                name: "ICC-启点未来创新设计赛事宣讲2.0.pdf",
+                type: "PDF文档",
+                category: "pdf",
+                icon: "📄"
+            },
+            {
+                name: "【政策解读】教育部白名单赛事与新高考改革.pdf",
+                type: "PDF文档",
+                category: "pdf",
+                icon: "📄"
+            },
+            {
+                name: "全球发明大会.pdf",
+                type: "PDF文档",
+                category: "pdf",
+                icon: "📄"
+            },
+            {
+                name: "icc参赛汇总表.xlsx",
+                type: "Excel表格",
+                category: "excel",
+                icon: "📊"
+            }
+        ];
+
+        function createFileCard(file) {
+            const card = document.createElement('div');
+            card.className = 'file-card';
+            
+            let iconClass = '';
+            switch(file.category) {
+                case 'pdf':
+                    iconClass = 'pdf-icon';
+                    break;
+                case 'excel':
+                    iconClass = 'excel-icon';
+                    break;
+                case 'image':
+                    iconClass = 'image-icon';
+                    break;
+            }
+            
+            let imagePreview = '';
+            if (file.category === 'image') {
+                imagePreview = `<img src="${file.name}" alt="${file.name}" class="image-preview" onerror="this.style.display='none'">`;
+            }
+            
+            card.innerHTML = `
+                ${imagePreview}
+                <div class="file-icon ${iconClass}">
+                    ${file.icon}
+                </div>
+                <div class="file-name">${file.name}</div>
+                <div class="file-type">${file.type}</div>
+                <button class="download-btn" onclick="downloadFile('${file.name}')">
+                    📥 下载文件
+                </button>
+            `;
+            
+            return card;
+        }
+
+        function downloadFile(filename) {
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.href = filename;
+            link.download = filename;
+            link.target = '_blank';
+            
+            // 触发下载
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 显示下载提示
+            alert(`正在下载: ${filename}`);
+        }
+
+        // 渲染文件卡片
+        function renderFiles() {
+            const fileGrid = document.getElementById('fileGrid');
+            files.forEach(file => {
+                const card = createFileCard(file);
+                fileGrid.appendChild(card);
+            });
+        }
+
+        // 页面加载完成后渲染文件
+        document.addEventListener('DOMContentLoaded', renderFiles);
+    </script>
+</body>
+</html>
